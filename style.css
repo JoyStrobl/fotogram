@@ -1,0 +1,53 @@
+*{
+margin: 0;
+box-sizing: border-box;
+}
+
+
+
+@font-face {
+    font-family: "Figtree";
+    src: url("./assets/fonts/Figtree-VariableFont_wght.ttf") format("truetype");
+    font-weight: 300 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Figtree";
+    src: url("./assets/fonts/Figtree-Italic-VariableFont_wght.ttf") format("truetype");
+    font-weight: 300 900;
+    font-style: italic;
+}
+
+body {
+    font-family: "Figtree", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Figtree", sans-serif;
+    background-color: #06171D;
+    color: white;
+}
+
+header {
+    width: 100%;
+    background-color: #0A222C;
+}
+
+.header-content {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+}
+
+.header-content img {
+    width: 200px;
+    height: auto;
+}
