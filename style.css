@@ -51,3 +51,36 @@ header {
     width: 200px;
     height: auto;
 }
+
+
+.main-content {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 160px 32px 80px;
+}
+
+h1 {
+    font-size: 56px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0;
+}
+
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(7, 150px);
+    gap: 48px 16px;
+    justify-content: center;
+    margin-top: 160px;
+}
+
+.gallery img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid #124658;
+    cursor: pointer;
+}
