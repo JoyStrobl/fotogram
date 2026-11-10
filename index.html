@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,30 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fotogram</title>
-    <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.ico">
+<link rel="icon" href="./assets/icons/favicon.ico">
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js" defer></script>
 </head>
 
 <body>
-<header>
-    <div class="header-content">
-        <img src="./assets/icons/fotogram-logo.svg" alt="Fotogram Logo">
-    </div>
-</header>
+    <header>
+        <div class="header-content">
+            <img src="./assets/icons/fotogram-logo.svg" alt="Fotogram Logo">
+        </div>
+    </header>
 
-<main>
-    <div class="main-content">
-        <h1>Your personal photo album</h1>
+    <main>
+        <div class="main-content">
+            <h1>Your personal photo album</h1>
 
-        <section class="gallery">
-            <img src="./assets/img/alaska.png" alt="Alaska">
-        </section>
-    </div>
-</main>
+            <section class="gallery">
 
+            </section>
+            <template id="gallery-button-template">
+                <button class="gallery-button" type="button">
+                    <img alt="">
+                </button>
+            </template>
+        </div>
+    </main>
+
+
+    <div class="overlay">
+        	<div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+
+            <div class="overlay-header">
+                <h2 id="overlay-title">Alaska</h2>
+
+
+                <button id="close-overlay" class="close-overlay" aria-label="Close image">
+                    <img class="close-default" src="./assets/icons/close-default.svg" alt="">
+                    <img class="close-hover" src="./assets/icons/close-hover.svg" alt="">
+                    <img class="close-pressing" src="./assets/icons/close-while-pressing.svg" alt="">
+                </button>
+
+            </div>
+
+            <img id="overlay-image" class="overlay-image" src="./assets/img/alaska.png" alt="Alaska">
+
+            <div class="overlay-navigation">
+
+                <button id="previous-image" aria-label="Previous image">
+                    <img class="arrow-light" src="./assets/icons/arrow-light-left.svg" alt="">
+                    <img class="arrow-full" src="./assets/icons/arrow-full-left.svg" alt="">
+                </button>
+
+                <span id="image-counter" class="image-counter">1/12</span>
+                <button id="next-image" aria-label="Next image">
+                    <img class="arrow-light" src="./assets/icons/arrow-light-right.svg" alt="">
+                    <img class="arrow-full" src="./assets/icons/arrow-full-right.svg" alt="">
+                </button>
+
+            </div>
+
+        </div>
     </div>
-</main>
+
+
+
+
+    <footer>
+        <div class="footer-content">
+            <img src="./assets/icons/da-logo.svg" alt="Developer Akademie Logo">
+
+            <p>© 2023 Developer Akademie GmbH</p>
+        </div>
+    </footer>
 </body>
 
 </html>
