@@ -47,10 +47,22 @@ const FOOTER = document.querySelector("footer");
 let currentImageIndex = 0;
 let previousFocus = null;
 
+/** Builds the gallery and connects the controls. */
+function init() {
+  renderGallery();
+  CLOSE_BUTTON.addEventListener("click", closeOverlay);
+  NEXT_BUTTON.addEventListener("click", showNextImage);
+  PREVIOUS_BUTTON.addEventListener("click", showPreviousImage);
+  OVERLAY.addEventListener("click", handleOverlayClick);
+  document.addEventListener("keydown", handleKeydown);
+}
+
+init();
+
 /**
- * Erstellt einen Galeriebutton aus der HTML-Vorlage.
- * @param {number} index - Position des Bildes.
- * @returns {HTMLButtonElement} Der fertige Galeriebutton.
+ * Creates a gallery button from the HTML template.
+ * @param {number} index - position of image
+ * @returns {HTMLButtonElement} Finished gallery button
  */
 function createGalleryButton(index) {
   const BUTTON = GALLERY_BUTTON_TEMPLATE.content.firstElementChild.cloneNode(true);
@@ -64,7 +76,7 @@ function createGalleryButton(index) {
   return BUTTON;
 }
 
-/** Fügt für jedes Foto einen Button in die Galerie ein. */
+/** Additionally, it sets up the click event listener for each button to open the overlay with the corresponding image. */
 function renderGallery() {
   for (let index = 0; index < IMAGES.length; index++) {
     GALLERY.appendChild(createGalleryButton(index));
@@ -72,21 +84,31 @@ function renderGallery() {
 }
 
 /**
- * Aktualisiert Bild, Titel und Bildzähler im Overlay.
- * @param {number} index - Position des Bildes.
+ * Updates the image, title, and image counter in the overlay.
+ * @param {number} index - position of image
  */
-function showImage(index) {
+async function showImage(index) {
   currentImageIndex = index;
+  OVERLAY_IMAGE.style.visibility = "hidden";
   OVERLAY_IMAGE.src = IMAGE_DIRECTORY + IMAGES[index];
   OVERLAY_IMAGE.alt = IMAGE_TITLES[index];
   OVERLAY_TITLE.textContent = IMAGE_TITLES[index];
   IMAGE_COUNTER.textContent = `${index + 1}/${IMAGES.length}`;
+
+  try {
+    await OVERLAY_IMAGE.decode();
+  } catch {
+    return;
+  }
+  if (index === currentImageIndex) {
+    OVERLAY_IMAGE.style.visibility = "visible";
+  }
 }
 
 /**
- * Öffnet das Overlay und setzt den Fokus auf den Schließen-Button.
- * @param {number} index - Position des Bildes.
- * @param {HTMLButtonElement} triggerButton - Auslösender Galeriebutton.
+ * Opens the overlay and sets the focus to the close button.
+ * @param {number} index - position of image
+ * @param {HTMLButtonElement} triggerButton - Triggering gallery button
  */
 function openOverlay(index, triggerButton) {
   previousFocus = triggerButton;
@@ -98,7 +120,7 @@ function openOverlay(index, triggerButton) {
   CLOSE_BUTTON.focus();
 }
 
-/** Schließt das Overlay und gibt den Fokus an den Galeriebutton zurück. */
+/** Closes the overlay and returns the focus to the gallery button. */
 function closeOverlay() {
   OVERLAY.style.display = "none";
   MAIN.inert = false;
@@ -108,22 +130,22 @@ function closeOverlay() {
   previousFocus = null;
 }
 
-/** Zeigt das nächste Bild an und springt am Ende zum ersten Bild. */
-function showNextImage() {
-  const NEXT_INDEX = (currentImageIndex + 1) % IMAGES.length;
-  showImage(NEXT_INDEX);
+/** Buttons forward and backward */
+function getWrappedIndex(index, direction, itemCount) {
+  return (index + direction + itemCount) % itemCount;
 }
 
-/** Zeigt das vorherige Bild an und springt am Anfang zum letzten Bild. */
+function showNextImage() {
+  showImage(getWrappedIndex(currentImageIndex, 1, IMAGES.length));
+}
+
 function showPreviousImage() {
-  const PREVIOUS_INDEX =
-    (currentImageIndex - 1 + IMAGES.length) % IMAGES.length;
-  showImage(PREVIOUS_INDEX);
+  showImage(getWrappedIndex(currentImageIndex, -1, IMAGES.length));
 }
 
 /**
- * Schließt das Overlay bei einem Klick auf den dunklen Hintergrund.
- * @param {MouseEvent} event - Das Klickereignis.
+ * Closes the overlay when clicking on the dark background.
+ * @param {MouseEvent} event - The click event.
  */
 function handleOverlayClick(event) {
   if (event.target === OVERLAY) {
@@ -132,22 +154,22 @@ function handleOverlayClick(event) {
 }
 
 /**
- * Bewegt den Fokus mit Tab oder Umschalt+Tab zwischen den Overlay-Buttons.
- * @param {KeyboardEvent} event - Das Tastaturereignis.
+ * Moves the focus with Tab or Shift+Tab between the overlay buttons.
+ * @param {KeyboardEvent} event - The keyboard event.
  */
 function handleTabKey(event) {
   const FOCUSED_INDEX = OVERLAY_BUTTONS.indexOf(document.activeElement);
   const DIRECTION = event.shiftKey ? -1 : 1;
   const BUTTON_COUNT = OVERLAY_BUTTONS.length;
-  const NEXT_INDEX = (FOCUSED_INDEX + DIRECTION + BUTTON_COUNT) % BUTTON_COUNT;
+  const NEXT_INDEX = getWrappedIndex(FOCUSED_INDEX, DIRECTION, BUTTON_COUNT);
 
   event.preventDefault();
   OVERLAY_BUTTONS[NEXT_INDEX].focus();
 }
 
 /**
- * Verarbeitet Escape, die Pfeiltasten und Tab bei geöffnetem Overlay.
- * @param {KeyboardEvent} event - Das Tastaturereignis.
+ * Processes Escape, arrow keys, and Tab when the overlay is open.
+ * @param {KeyboardEvent} event - The keyboard event.
  */
 function handleKeydown(event) {
   if (OVERLAY.style.display !== "flex") {
@@ -164,14 +186,3 @@ function handleKeydown(event) {
   }
 }
 
-/** Baut die Galerie auf und verbindet die Bedienelemente. */
-function init() {
-  renderGallery();
-  CLOSE_BUTTON.addEventListener("click", closeOverlay);
-  NEXT_BUTTON.addEventListener("click", showNextImage);
-  PREVIOUS_BUTTON.addEventListener("click", showPreviousImage);
-  OVERLAY.addEventListener("click", handleOverlayClick);
-  document.addEventListener("keydown", handleKeydown);
-}
-
-init();
