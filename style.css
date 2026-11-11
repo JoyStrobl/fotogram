@@ -413,3 +413,24 @@ main {
         padding-inline: 0;
     }
 }
+
+@media (max-height: 720px) {
+    .overlay-content {
+        max-height: calc(100dvh - 32px);
+        padding-block: 48px 20px;
+    }
+
+    .overlay-header {
+        margin-bottom: 16px;
+    }
+
+    .overlay-image {
+        display: block;
+        height: clamp(100px, calc(100dvh - 224px), 375px);
+        object-fit: contain;
+    }
+
+    .overlay-navigation {
+        margin-top: 16px;
+    }
+}

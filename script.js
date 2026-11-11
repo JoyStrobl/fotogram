@@ -1,6 +1,6 @@
-const IMAGE_DIRECTORY = "./assets/img/";
+const image_directory = "./assets/img/";
 
-const IMAGES = [
+const images = [
   "alaska-full.jpg",
   "city-full.jpg",
   "sky-full.png",
@@ -15,7 +15,7 @@ const IMAGES = [
   "winter-full.jpg"
 ];
 
-const IMAGE_TITLES = [
+const image_titles = [
   "Alaska",
   "Stadt bei Nacht",
   "Himmel",
@@ -30,31 +30,31 @@ const IMAGE_TITLES = [
   "Winter"
 ];
 
-const GALLERY = document.querySelector(".gallery");
-const GALLERY_BUTTON_TEMPLATE = document.getElementById("gallery-button-template");
-const OVERLAY = document.querySelector(".overlay");
-const OVERLAY_IMAGE = document.getElementById("overlay-image");
-const OVERLAY_TITLE = document.getElementById("overlay-title");
-const IMAGE_COUNTER = document.getElementById("image-counter");
-const CLOSE_BUTTON = document.getElementById("close-overlay");
-const NEXT_BUTTON = document.getElementById("next-image");
-const PREVIOUS_BUTTON = document.getElementById("previous-image");
-const OVERLAY_BUTTONS = [CLOSE_BUTTON, PREVIOUS_BUTTON, NEXT_BUTTON];
-const MAIN = document.querySelector("main");
-const HEADER = document.querySelector("header");
-const FOOTER = document.querySelector("footer");
+const gallery = document.querySelector(".gallery");
+const gallery_button_template = document.getElementById("gallery-button-template");
+const overlay = document.querySelector(".overlay");
+const overlay_image = document.getElementById("overlay-image");
+const overlay_title = document.getElementById("overlay-title");
+const image_counter = document.getElementById("image-counter");
+const close_button = document.getElementById("close-overlay");
+const next_button = document.getElementById("next-image");
+const previous_button = document.getElementById("previous-image");
+const overlay_buttons = [close_button, previous_button, next_button];
+const main = document.querySelector("main");
+const header = document.querySelector("header");
+const footer = document.querySelector("footer");
 
-let currentImageIndex = 0;
-let previousFocus = null;
+let current_image_index = 0;
+let previous_focus = null;
 
 /** Builds the gallery and connects the controls. */
 function init() {
-  renderGallery();
-  CLOSE_BUTTON.addEventListener("click", closeOverlay);
-  NEXT_BUTTON.addEventListener("click", showNextImage);
-  PREVIOUS_BUTTON.addEventListener("click", showPreviousImage);
-  OVERLAY.addEventListener("click", handleOverlayClick);
-  document.addEventListener("keydown", handleKeydown);
+  render_gallery();
+  close_button.addEventListener("click", close_overlay);
+  next_button.addEventListener("click", show_next_image);
+  previous_button.addEventListener("click", show_previous_image);
+  overlay.addEventListener("click", handle_overlay_click);
+  document.addEventListener("keydown", handle_keydown);
 }
 
 init();
@@ -64,22 +64,22 @@ init();
  * @param {number} index - position of image
  * @returns {HTMLButtonElement} Finished gallery button
  */
-function createGalleryButton(index) {
-  const BUTTON = GALLERY_BUTTON_TEMPLATE.content.firstElementChild.cloneNode(true);
-  const IMAGE = BUTTON.querySelector("img");
+function create_gallery_button(index) {
+  const button = gallery_button_template.content.firstElementChild.cloneNode(true);
+  const image = button.querySelector("img");
 
-  IMAGE.src = IMAGE_DIRECTORY + IMAGES[index];
-  IMAGE.loading = "lazy";
-  BUTTON.setAttribute("aria-label", `Open image: ${IMAGE_TITLES[index]}`);
-  BUTTON.addEventListener("click", () => openOverlay(index, BUTTON));
+  image.src = image_directory + images[index];
+  image.loading = "lazy";
+  button.setAttribute("aria-label", `Open image: ${image_titles[index]}`);
+  button.addEventListener("click", () => open_overlay(index, button));
 
-  return BUTTON;
+  return button;
 }
 
 /** Additionally, it sets up the click event listener for each button to open the overlay with the corresponding image. */
-function renderGallery() {
-  for (let index = 0; index < IMAGES.length; index++) {
-    GALLERY.appendChild(createGalleryButton(index));
+function render_gallery() {
+  for (let index = 0; index < images.length; index++) {
+    gallery.appendChild(create_gallery_button(index));
   }
 }
 
@@ -87,67 +87,67 @@ function renderGallery() {
  * Updates the image, title, and image counter in the overlay.
  * @param {number} index - position of image
  */
-async function showImage(index) {
-  currentImageIndex = index;
-  OVERLAY_IMAGE.style.visibility = "hidden";
-  OVERLAY_IMAGE.src = IMAGE_DIRECTORY + IMAGES[index];
-  OVERLAY_IMAGE.alt = IMAGE_TITLES[index];
-  OVERLAY_TITLE.textContent = IMAGE_TITLES[index];
-  IMAGE_COUNTER.textContent = `${index + 1}/${IMAGES.length}`;
+async function show_image(index) {
+  current_image_index = index;
+  overlay_image.style.visibility = "hidden";
+  overlay_image.src = image_directory + images[index];
+  overlay_image.alt = image_titles[index];
+  overlay_title.textContent = image_titles[index];
+  image_counter.textContent = `${index + 1}/${images.length}`;
 
   try {
-    await OVERLAY_IMAGE.decode();
+    await overlay_image.decode();
   } catch { return; }
-  if (index === currentImageIndex) {
-    OVERLAY_IMAGE.style.visibility = "visible";
+  if (index === current_image_index) {
+    overlay_image.style.visibility = "visible";
   }
 }
 
 /**
  * Opens the overlay and sets the focus to the close button.
  * @param {number} index - position of image
- * @param {HTMLButtonElement} triggerButton - Triggering gallery button
+ * @param {HTMLButtonElement} trigger_button - Triggering gallery button
  */
-function openOverlay(index, triggerButton) {
-  previousFocus = triggerButton;
-  showImage(index);
-  OVERLAY.style.display = "flex";
-  MAIN.inert = true;
-  HEADER.inert = true;
-  FOOTER.inert = true;
-  CLOSE_BUTTON.focus();
+function open_overlay(index, trigger_button) {
+  previous_focus = trigger_button;
+  show_image(index);
+  overlay.style.display = "flex";
+  main.inert = true;
+  header.inert = true;
+  footer.inert = true;
+  close_button.focus();
 }
 
 /** Closes the overlay and returns the focus to the gallery button. */
-function closeOverlay() {
-  OVERLAY.style.display = "none";
-  MAIN.inert = false;
-  HEADER.inert = false;
-  FOOTER.inert = false;
-  previousFocus?.focus();
-  previousFocus = null;
+function close_overlay() {
+  overlay.style.display = "none";
+  main.inert = false;
+  header.inert = false;
+  footer.inert = false;
+  previous_focus?.focus();
+  previous_focus = null;
 }
 
 /** Buttons forward and backward */
-function getWrappedIndex(index, direction, itemCount) {
-  return (index + direction + itemCount) % itemCount;
+function get_wrapped_index(index, direction, item_count) {
+  return (index + direction + item_count) % item_count;
 }
 
-function showNextImage() {
-  showImage(getWrappedIndex(currentImageIndex, 1, IMAGES.length));
+function show_next_image() {
+  show_image(get_wrapped_index(current_image_index, 1, images.length));
 }
 
-function showPreviousImage() {
-  showImage(getWrappedIndex(currentImageIndex, -1, IMAGES.length));
+function show_previous_image() {
+  show_image(get_wrapped_index(current_image_index, -1, images.length));
 }
 
 /**
  * Closes the overlay when clicking on the dark background.
  * @param {MouseEvent} event - The click event.
  */
-function handleOverlayClick(event) {
-  if (event.target === OVERLAY) {
-    closeOverlay();
+function handle_overlay_click(event) {
+  if (event.target === overlay) {
+    close_overlay();
   }
 }
 
@@ -155,32 +155,32 @@ function handleOverlayClick(event) {
  * Moves the focus with Tab or Shift+Tab between the overlay buttons.
  * @param {KeyboardEvent} event - The keyboard event.
  */
-function handleTabKey(event) {
-  const FOCUSED_INDEX = OVERLAY_BUTTONS.indexOf(document.activeElement);
-  const DIRECTION = event.shiftKey ? -1 : 1;
-  const BUTTON_COUNT = OVERLAY_BUTTONS.length;
-  const NEXT_INDEX = getWrappedIndex(FOCUSED_INDEX, DIRECTION, BUTTON_COUNT);
+function handle_tab_key(event) {
+  const focused_index = overlay_buttons.indexOf(document.activeElement);
+  const direction = event.shiftKey ? -1 : 1;
+  const button_count = overlay_buttons.length;
+  const next_index = get_wrapped_index(focused_index, direction, button_count);
 
   event.preventDefault();
-  OVERLAY_BUTTONS[NEXT_INDEX].focus();
+  overlay_buttons[next_index].focus();
 }
 
 /**
  * Processes Escape, arrow keys, and Tab when the overlay is open.
  * @param {KeyboardEvent} event - The keyboard event.
  */
-function handleKeydown(event) {
-  if (OVERLAY.style.display !== "flex") {
+function handle_keydown(event) {
+  if (overlay.style.display !== "flex") {
     return;
   }
   if (event.key === "Escape") {
-    closeOverlay();
+    close_overlay();
   } else if (event.key === "ArrowRight") {
-    showNextImage();
+    show_next_image();
   } else if (event.key === "ArrowLeft") {
-    showPreviousImage();
+    show_previous_image();
   } else if (event.key === "Tab") {
-    handleTabKey(event);
+    handle_tab_key(event);
   }
 }
 
