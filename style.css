@@ -103,6 +103,10 @@ h1 {
 
 /* Overlay */
 
+body.overlay-open {
+    overflow: hidden;
+}
+
 .overlay {
     position: fixed;
     inset: 0;
@@ -326,6 +330,10 @@ main {
     }
 
     /* Overlay */
+
+body.overlay-open {
+    overflow: hidden;
+}
 
     .overlay {
         width: 100%;

@@ -112,6 +112,7 @@ function open_overlay(index, trigger_button) {
   previous_focus = trigger_button;
   show_image(index);
   overlay.style.display = "flex";
+  document.body.classList.add("overlay-open");
   main.inert = true;
   header.inert = true;
   footer.inert = true;
@@ -121,6 +122,7 @@ function open_overlay(index, trigger_button) {
 /** Closes the overlay and returns the focus to the gallery button. */
 function close_overlay() {
   overlay.style.display = "none";
+  document.body.classList.remove("overlay-open");
   main.inert = false;
   header.inert = false;
   footer.inert = false;
