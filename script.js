@@ -97,9 +97,7 @@ async function showImage(index) {
 
   try {
     await OVERLAY_IMAGE.decode();
-  } catch {
-    return;
-  }
+  } catch { return; }
   if (index === currentImageIndex) {
     OVERLAY_IMAGE.style.visibility = "visible";
   }
